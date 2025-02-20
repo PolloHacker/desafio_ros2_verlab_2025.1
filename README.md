@@ -3,26 +3,21 @@
 
 ### Prerequisites
 Ensure you have the following installed:
-- ROS 2 (Foxy, Galactic, or Rolling)
+- ROS 2 (Jazzy)
+- Gazebo
 - colcon
-- vcs (for importing repositories)
 
 ### Setup Instructions
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/yourusername/desafio_ros2_verlab_2025.1.git
+    git clone https://github.com/PolloHacker/desafio_ros2_verlab_2025.1.git
     cd desafio_ros2_verlab_2025.1
-    ```
-
-2. **Import dependencies:**
-    ```sh
-    vcs import < src/ros2.repos
     ```
 
 3. **Install dependencies:**
     ```sh
-    rosdep install --from-paths src --ignore-src -r -y
+    rosdep install --from-paths src --rosdistro jazzy -y
     ```
 
 4. **Build the workspace:**
@@ -46,19 +41,3 @@ Ensure you have the following installed:
     ```sh
     ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r cmd_vel:=scout_mini/cmd_vel
     ```
-
-### Additional Information
-
-- **Uninstall:**
-    To uninstall the project, you can run the following command:
-    ```sh
-    colcon build --cmake-target uninstall
-    ```
-
-- **Clean Build:**
-    To clean the build, use:
-    ```sh
-    colcon build --cmake-target clean
-    ```
-
-For more detailed information, refer to the documentation within each package.
