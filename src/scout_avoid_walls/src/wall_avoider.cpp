@@ -60,8 +60,14 @@ void WallAvoider::LidarCallback(const sensor_msgs::msg::LaserScan::SharedPtr msg
     bool is_moving_forward = this->last_key_command_.linear.x > 0.0;
     bool is_moving_backward = this->last_key_command_.linear.x < 0.0;
 
-    HandleForwardMovement(is_moving_forward, mov_params, final_cmd);
-    HandleBackwardMovement(is_moving_backward, mov_params, final_cmd);
+    if (is_moving_forward)
+    {
+        HandleForwardMovement(mov_params, final_cmd);
+    }
+    if (is_moving_backward)
+    {
+        HandleBackwardMovement(mov_params, final_cmd);
+    }
     AvoidSideCollisions(final_cmd, mov_params);
 
     this->cmd_vel_publisher_->publish(final_cmd);
@@ -91,40 +97,37 @@ WallAvoider::MovementParams WallAvoider::CalculateMinDistances(const std::vector
 
     return {min_front, min_right, min_rear, min_left};
 }
-void WallAvoider::HandleForwardMovement(bool is_moving_forward, MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd)
+void WallAvoider::HandleForwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd)
 {
-    if (is_moving_forward)
+    if (mov_params.min_front < this->threshold_stop_)
     {
-        if (mov_params.min_front < this->threshold_stop_)
-        {
-            RCLCPP_WARN(this->get_logger(), "Obstacle too close ahead! Stopping.");
-            final_cmd.linear.x = 0.0;
-        }
-        else if (mov_params.min_front < this->threshold_slow_)
-        {
-            RCLCPP_INFO(this->get_logger(), "Obstacle ahead! Slowing down.");
-            final_cmd.linear.x *= 0.3;
-        }
+        RCLCPP_WARN(this->get_logger(), "Obstacle too close ahead! Stopping.");
+        final_cmd.linear.x = 0.0;
+    }
+    else if (mov_params.min_front < this->threshold_slow_)
+    {
+        RCLCPP_INFO(this->get_logger(), "Obstacle ahead! Slowing down.");
+        final_cmd.linear.x *= 0.3;
+    }
 
-        if (mov_params.min_front < this->threshold_slow_)
+    if (mov_params.min_front < this->threshold_slow_)
+    {
+        if (mov_params.min_right < mov_params.min_left) // Obstacle is on the right
         {
-            if (mov_params.min_right < mov_params.min_left) // Obstacle is on the right
-            {
-                RCLCPP_INFO(this->get_logger(), "Obstacle on the right! Turning left.");
-                final_cmd.angular.z = 1.0; // Turn left
-            }
-            else // Obstacle is on the left
-            {
-                RCLCPP_INFO(this->get_logger(), "Obstacle on the left! Turning right.");
-                final_cmd.angular.z = -1.0; // Turn right
-            }
+            RCLCPP_INFO(this->get_logger(), "Obstacle on the right! Turning left.");
+            final_cmd.angular.z = 1.0; // Turn left
+        }
+        else // Obstacle is on the left
+        {
+            RCLCPP_INFO(this->get_logger(), "Obstacle on the left! Turning right.");
+            final_cmd.angular.z = -1.0; // Turn right
         }
     }
 }
 
-void WallAvoider::HandleBackwardMovement(bool is_moving_backward, MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd)
+void WallAvoider::HandleBackwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd)
 {
-    if (is_moving_backward && mov_params.min_rear < this->threshold_stop_)
+    if (mov_params.min_rear < this->threshold_stop_)
     {
         RCLCPP_WARN(this->get_logger(), "Obstacle too close behind! Stopping.");
         final_cmd.linear.x = 0.0;

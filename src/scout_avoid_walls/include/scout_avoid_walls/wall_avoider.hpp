@@ -5,6 +5,13 @@
 #include <sensor_msgs/msg/laser_scan.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 
+/**
+ * @class WallAvoider
+ * @brief A ROS2 node for avoiding walls using LIDAR and keyboard inputs.
+ * 
+ * The WallAvoider class subscribes to LIDAR and keyboard topics to control a robot's movement,
+ * avoiding collisions with walls by adjusting its velocity commands.
+ */
 class WallAvoider : public rclcpp::Node
 {
 public:
@@ -35,8 +42,8 @@ private:
     
     MovementParams CalculateMinDistances(const std::vector<float> &ranges, size_t total_points);
     float SafeMin(const std::vector<float> &ranges, size_t start, size_t end);
-    void HandleForwardMovement(bool is_moving_forward, MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd);
-    void HandleBackwardMovement(bool is_moving_backward, MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd);
+    void HandleForwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd);
+    void HandleBackwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd);
     void AvoidSideCollisions(geometry_msgs::msg::Twist &final_cmd, MovementParams mov_params);
 };
 
