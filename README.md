@@ -10,34 +10,43 @@ Ensure you have the following installed:
 ### Setup Instructions
 
 1. **Clone the repository:**
-    ```sh
+    ```bash
     git clone https://github.com/PolloHacker/desafio_ros2_verlab_2025.1.git
     cd desafio_ros2_verlab_2025.1
     ```
 
 3. **Install dependencies:**
-    ```sh
+    ```bash
     rosdep install --from-paths src --rosdistro jazzy -y
     ```
 
 4. **Build the workspace:**
-    ```sh
+    ```bash
     colcon build
     ```
 
 5. **Source the workspace:**
-    ```sh
+    ```bash
     source install/setup.bash
     ```
 
 ### Running the Project
 
 1. **Launch the simulation:**
-    ```sh
-    ros2 launch scout_gazebo_sim scout_mini_empty_world.launch.py
+    ```bash
+    ros2 launch scout_gazebo_sim scout_mini_test_world.launch.py
     ```
 
-2. **Control the robot:**
-    ```sh
-    ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r cmd_vel:=scout_mini/cmd_vel
-    ```
+2. **Control the robot:**  
+    - To control the scout mini in the simulation, you'll need to start the `teleop_twist_keyboard` package from your terminal:
+
+        ```bash
+        ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r cmd_vel:=scout_mini/cmd_vel
+        ```
+    - After that, start the wall avoidance system:
+
+        ```bash
+        ros2 run scout_avoid_walls avoid_walls
+        ```
+
+        It will make sure the robot doesn't crash into an obstacle by reading key commands from keyboard and 
