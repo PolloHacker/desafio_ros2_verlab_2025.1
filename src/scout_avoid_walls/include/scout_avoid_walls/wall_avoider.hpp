@@ -44,7 +44,6 @@ private:
     float SafeMin(const std::vector<float> &ranges, size_t start, size_t end);
     void HandleForwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd);
     void HandleBackwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd);
-    void AvoidSideCollisions(geometry_msgs::msg::Twist &final_cmd, MovementParams mov_params);
 };
 
 #endif // WALL_AVOIDER_HPP

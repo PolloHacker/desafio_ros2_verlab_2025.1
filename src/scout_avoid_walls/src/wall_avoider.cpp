@@ -9,7 +9,7 @@ ros2 run --prefix 'gdbserver localhost:3000' scout_avoid_walls avoid_walls
 
 WallAvoider::WallAvoider() : Node("wall_avoider"),
                              linear_speed_(3.0), angular_speed_(0.5235),
-                             threshold_stop_(0.5), threshold_slow_(1.2)
+                             threshold_stop_(0.7), threshold_slow_(1.3)
 {
     this->lidar_subscription_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
         "/scout_mini/scan", 10, std::bind(&WallAvoider::LidarCallback, this, std::placeholders::_1));
@@ -46,7 +46,7 @@ void WallAvoider::LidarCallback(const sensor_msgs::msg::LaserScan::SharedPtr msg
 
     size_t total_points = msg->ranges.size();
 
-    if (total_points < 4) // Avoid segmentation fault if there's not enough data
+    if (total_points < 12) // Avoid segmentation fault if there's not enough data
     {
         RCLCPP_ERROR(this->get_logger(), "Lidar data too small (%zu points), ignoring frame.", total_points);
         return;
@@ -68,35 +68,40 @@ void WallAvoider::LidarCallback(const sensor_msgs::msg::LaserScan::SharedPtr msg
     {
         HandleBackwardMovement(mov_params, final_cmd);
     }
-    AvoidSideCollisions(final_cmd, mov_params);
+
+    final_cmd.linear.x *= this->linear_speed_;
+    final_cmd.angular.z *= this->angular_speed_;
 
     this->cmd_vel_publisher_->publish(final_cmd);
 }
 
 WallAvoider::MovementParams WallAvoider::CalculateMinDistances(const std::vector<float> &ranges, size_t total_points)
 {
-    size_t front_start = (5 * total_points) / 12;
-    size_t front_end = (7 * total_points) / 12;
+    // Lidar sensor works counterclockwise starting from the X axis (where the robot is facing)
 
-    size_t rear_start = 0;
-    size_t rear_end = total_points / 12;
-    size_t rear_start2 = (11 * total_points) / 12;
-    size_t rear_end2 = total_points;
+    size_t front_start = 0;
+    size_t front_end = total_points * 30 / 360;
+    size_t front_start2 = total_points * 330 / 360;
+    size_t front_end2 = total_points;
 
-    size_t right_start = total_points / 12;
-    size_t right_end = (5 * total_points) / 12;
+    size_t left_start = total_points * 30 / 360;
+    size_t left_end = total_points * 150 / 360;
 
-    size_t left_start = (7 * total_points) / 12;
-    size_t left_end = (11 * total_points) / 12;
+    size_t rear_start = total_points * 150 / 360;
+    size_t rear_end = total_points * 210 / 360;
 
-    float min_front = SafeMin(ranges, front_start, front_end);
+    size_t right_start = total_points * 210 / 360;
+    size_t right_end = total_points * 330 / 360;
+
+    float min_front = std::min(SafeMin(ranges, front_start, front_end),
+                               SafeMin(ranges, front_start2, front_end2));
     float min_right = SafeMin(ranges, right_start, right_end);
-    float min_rear = std::min(SafeMin(ranges, rear_start, rear_end),
-                              SafeMin(ranges, rear_start2, rear_end2));
+    float min_rear = SafeMin(ranges, rear_start, rear_end);
     float min_left = SafeMin(ranges, left_start, left_end);
 
-    return {min_front, min_right, min_rear, min_left};
+    return {min_front, min_right, min_left, min_rear};
 }
+
 void WallAvoider::HandleForwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd)
 {
     if (mov_params.min_front < this->threshold_stop_)
@@ -107,44 +112,36 @@ void WallAvoider::HandleForwardMovement(MovementParams mov_params, geometry_msgs
     else if (mov_params.min_front < this->threshold_slow_)
     {
         RCLCPP_INFO(this->get_logger(), "Obstacle ahead! Slowing down.");
-        final_cmd.linear.x *= 0.3;
+        final_cmd.linear.x *= 0.5;
     }
 
     if (mov_params.min_front < this->threshold_slow_)
     {
-        if (mov_params.min_right < mov_params.min_left) // Obstacle is on the right
+        if (mov_params.min_right < mov_params.min_left)
         {
             RCLCPP_INFO(this->get_logger(), "Obstacle on the right! Turning left.");
-            final_cmd.angular.z = 1.0; // Turn left
+            final_cmd.angular.z = 1.0;
         }
-        else // Obstacle is on the left
+        else
         {
             RCLCPP_INFO(this->get_logger(), "Obstacle on the left! Turning right.");
-            final_cmd.angular.z = -1.0; // Turn right
+            final_cmd.angular.z = -1.0;
         }
     }
 }
 
 void WallAvoider::HandleBackwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd)
 {
+    if (mov_params.min_rear < this->threshold_slow_)
+    {
+        RCLCPP_INFO(this->get_logger(), "Obstacle behind! Slowing down.");
+        final_cmd.linear.x *= 0.5;
+    }
     if (mov_params.min_rear < this->threshold_stop_)
     {
         RCLCPP_WARN(this->get_logger(), "Obstacle too close behind! Stopping.");
         final_cmd.linear.x = 0.0;
-    }
-}
-
-void WallAvoider::AvoidSideCollisions(geometry_msgs::msg::Twist &final_cmd, MovementParams mov_params)
-{
-    if (final_cmd.angular.z > 0.0 && mov_params.min_left < this->threshold_slow_)
-    {
-        RCLCPP_WARN(this->get_logger(), "Too close to the left wall! Reducing rotation.");
-        final_cmd.angular.z *= 0.5;
-    }
-    if (final_cmd.angular.z < 0.0 && mov_params.min_right < this->threshold_slow_)
-    {
-        RCLCPP_WARN(this->get_logger(), "Too close to the right wall! Reducing rotation.");
-        final_cmd.angular.z *= 0.5;
+        final_cmd.angular.z = 0.0;
     }
 }
 
