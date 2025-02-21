@@ -34,7 +34,7 @@
   direction: "GZ_TO_ROS"           
 
 # cmd_vel
-- ros_topic_name: "scout_mini/cmd_vel"
+- ros_topic_name: "scout_mini/cmd_vel_safe"
   gz_topic_name: "cmd_vel"         
   ros_type_name: "geometry_msgs/msg/Twist"
   gz_type_name: "ignition.msgs.Twist" 

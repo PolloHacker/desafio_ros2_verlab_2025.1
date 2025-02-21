@@ -1,16 +1,17 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>scout_description</name>
+  <name>scout_avoid_walls</name>
   <version>0.0.0</version>
-  <description>AgileX Scout description</description>
-  <maintainer email="mattia.dutto@polito.it">mattia</maintainer>
-  <maintainer email="isaac.reyalves@gmail.com">Isaac Reyes</maintainer>
-  <license>Apache License 2.0</license>
+  <description>Simple Lidar publisher subscriber to avoid walls in C++</description>
+  <maintainer email="Iisaac.reyalves@gmail.com">Isaac Reyes</maintainer>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>xacro</depend>
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
