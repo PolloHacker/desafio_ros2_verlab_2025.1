@@ -85,10 +85,11 @@ Big thanks to all the repos and tutorials that helped me go through this challen
 
 - [Scout Mini user manual](https://www.generationrobots.com/media/agilex/SCOUT_MINI_UserManual_v1.0.1_EN.pdf)
 - [Official Manufactorer docs](https://global.agilex.ai/products/scout-mini)
-- [Diff drive robot](https://github.com/adoodevv/diff_drive_robot) (got the test map from them)
-- [Official Gazebo tutorials](https://gazebosim.org/docs/latest/sensors/#lidar-sensor) (helped me a lot with Lidar and gave me the idea to create WAS)
-- [Official ROS2 docs](https://docs.ros.org/en/jazzy/index.html) (learnt a lot with it)
-- [Scout Mini model for Gazebo in ROS2](https://github.com/mattiadutto/ugv_gazebo_sim) (got the base model, setup, bridge, config and launch files from it.) **This one really saved me**
+- [Diff drive robot](https://github.com/adoodevv/diff_drive_robot)
+- [Official Gazebo tutorials](https://gazebosim.org/docs/latest/sensors/#lidar-sensor)
+- [Official ROS2 docs](https://docs.ros.org/en/jazzy/index.html)
+- [Scout Mini model for Gazebo in ROS2](https://github.com/mattiadutto/ugv_gazebo_sim)
 - [Agilex models for Gazebo](https://github.com/agilexrobotics/ugv_gazebo_sim)
 - [Kevin Wood | Robotics & AI channel](https://www.youtube.com/@kevinwoodrobotics)
+- [Acceleration Robotics repo](https://github.com/acceleration-robotics/ros2-igt)
 - To all Stack Overflow, Reddit and ROS Answers topics that helped me fix broken parts of the project
