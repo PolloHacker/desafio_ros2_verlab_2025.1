@@ -12,10 +12,10 @@
 
 /**
  * @class WallAvoider3D
- * @brief A ROS2 node for avoiding walls using LIDAR and keyboard inputs.
+ * @brief A ROS2 node for avoiding obstacles using a 3D LIDAR and keyboard inputs.
  * 
  * The WallAvoider 3D class subscribes to LIDAR and keyboard topics to control a robot's movement,
- * avoiding collisions with walls by adjusting its velocity commands.
+ * avoiding collisions with obstacels by adjusting its velocity commands.
  */
 class WallAvoider3D : public rclcpp::Node
 {
@@ -23,14 +23,8 @@ public:
     WallAvoider3D();
 
 private:
-    struct MovementParams
-    {
-        float min_front;
-        float min_right;
-        float min_left;
-        float min_rear;
-        float front_obstacle_angle;
-    };
+    
+    struct MovementParams;
 
     double linear_speed_;
     double angular_speed_;
@@ -54,8 +48,8 @@ private:
     pcl::PointCloud<pcl::PointXYZ>::Ptr ConvertPointCloud(const sensor_msgs::msg::PointCloud2::SharedPtr msg);
     void FilterGroundPoints(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
     void AnalyzePointCloud(MovementParams &mov_params, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
-    void HandleForwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd);
-    void HandleBackwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd);
+    void HandleForwardMovement(MovementParams &mov_params, geometry_msgs::msg::Twist &final_cmd);
+    void HandleBackwardMovement(MovementParams &mov_params, geometry_msgs::msg::Twist &final_cmd);
 
 };
 
