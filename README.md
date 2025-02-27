@@ -62,7 +62,7 @@ Ensure you have the following installed:
         After that, start the wall avoidance system:
 
         ```bash
-        ros2 run scout_avoid_walls avoid_walls
+        ros2 run scout_avoid_walls_3d avoid_walls
         ```
 
         It will make sure the robot doesn't crash into an obstacle by reading key commands from keyboard and deciding when to turn and stop.
@@ -77,7 +77,7 @@ Ensure you have the following installed:
 
 ## Working project video
 
-[![IMAGE ALT TEXT HERE](thumbnail.png)](https://www.youtube.com/watch?v=IpDZvR9JGFU)
+[![Demo video](thumbnail.png)](https://www.youtube.com/watch?v=IpDZvR9JGFU)
 
 ## Acknowledgments
 
@@ -85,10 +85,12 @@ Big thanks to all the repos and tutorials that helped me go through this challen
 
 - [Scout Mini user manual](https://www.generationrobots.com/media/agilex/SCOUT_MINI_UserManual_v1.0.1_EN.pdf)
 - [Official Manufactorer docs](https://global.agilex.ai/products/scout-mini)
-- [Diff drive robot](https://github.com/adoodevv/diff_drive_robot) (got the test map from them)
-- [Official Gazebo tutorials](https://gazebosim.org/docs/latest/sensors/#lidar-sensor) (helped me a lot with Lidar and gave me the idea to create WAS)
-- [Official ROS2 docs](https://docs.ros.org/en/jazzy/index.html) (learnt a lot with it)
-- [Scout Mini model for Gazebo in ROS2](https://github.com/mattiadutto/ugv_gazebo_sim) (got the base model, setup, bridge, config and launch files from it.) **This one really saved me**
+- [Diff drive robot](https://github.com/adoodevv/diff_drive_robot)
+- [Official Gazebo tutorials](https://gazebosim.org/docs/latest/sensors/#lidar-sensor)
+- [Official ROS2 docs](https://docs.ros.org/en/jazzy/index.html)
+- [Scout Mini model for Gazebo in ROS2](https://github.com/mattiadutto/ugv_gazebo_sim)
 - [Agilex models for Gazebo](https://github.com/agilexrobotics/ugv_gazebo_sim)
 - [Kevin Wood | Robotics & AI channel](https://www.youtube.com/@kevinwoodrobotics)
+- [Acceleration Robotics repo](https://github.com/acceleration-robotics/ros2-igt)
+- [Wikipedia article about inertia](https://en.wikipedia.org/wiki/List_of_moments_of_inertia#List_of_3D_inertia_tensors)
 - To all Stack Overflow, Reddit and ROS Answers topics that helped me fix broken parts of the project
