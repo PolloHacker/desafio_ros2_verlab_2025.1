@@ -7,6 +7,10 @@
     - [Setup Instructions](#setup-instructions)
     - [Running the Project](#running-the-project)
   - [Working project video](#working-project-video)
+  - [Known issues](#known-issues)
+    - [Rviz related](#rviz-related)
+    - [Gazebo related](#gazebo-related)
+    - [WAS related](#was-related)
   - [Acknowledgments](#acknowledgments)
 
 
@@ -78,6 +82,21 @@ Ensure you have the following installed:
 ## Working project video
 
 [![Demo video](thumbnail.png)](https://www.youtube.com/watch?v=bzDSwYXdQSM)
+
+## Known issues
+
+### Rviz related
+- There's a warning saying that no map was received but, since the program was running normally both in Gazebo and rviz, i ignored it.
+- I tried loading a map from Gazebo fuel, but my computed refused to do so.
+
+### Gazebo related
+- I tried to calculate the inertia values for all the links using very basic formulas so the phisics may be not perfect.
+- For some reason, the brakes are very efficient in forward mode but are very slow in backwards mode.
+- The Lidar keeps bouncing a bit when the robot is at full speed.
+
+### WAS related
+- The algorithm that handles the obstacle avoidance is hardcoded, so it ain't really smart.
+- Sometimes, when turning, the robot may get stuck if the obstacle has a proeminent base (e.g: a construction cone)
 
 ## Acknowledgments
 
