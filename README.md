@@ -54,7 +54,7 @@ Ensure you have the following installed:
     ```
 
 2. **Control the robot:**  
-    - Using the Wall Avoidance System (WAS):
+    - Using the 3D Wall Avoidance System (WAS3):
     
         ```bash
         ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r cmd_vel:=scout_mini/cmd_vel
