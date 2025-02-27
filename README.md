@@ -77,7 +77,7 @@ Ensure you have the following installed:
 
 ## Working project video
 
-[![Demo video](thumbnail.png)](https://www.youtube.com/watch?v=IpDZvR9JGFU)
+[![Demo video](thumbnail.png)](https://www.youtube.com/watch?v=bzDSwYXdQSM)
 
 ## Acknowledgments
 
