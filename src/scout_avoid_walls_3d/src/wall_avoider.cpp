@@ -34,37 +34,6 @@
 
 #include "../include/scout_avoid_walls_3d/wall_avoider.hpp"
 
-/**
- * @struct WallAvoider3D::MovementParams
- * @brief Parameters for movement and obstacle avoidance.
- *
- * This structure holds various parameters used for detecting obstacles
- * and making movement decisions based on sensor readings.
- *
- * @var MovementParams::min_front
- * Minimum distance to an obstacle in front of the robot.
- *
- * @var MovementParams::min_right
- * Minimum distance to an obstacle on the right side of the robot.
- *
- * @var MovementParams::min_left
- * Minimum distance to an obstacle on the left side of the robot.
- *
- * @var MovementParams::min_rear
- * Minimum distance to an obstacle behind the robot.
- *
- * @var MovementParams::front_obstacle_angle
- * Angle at which an obstacle is detected in front of the robot.
- */
-WallAvoider3D::MovementParams
-{
-    float min_front;
-    float min_right;
-    float min_left;
-    float min_rear;
-    float front_obstacle_angle;
-};
-
 
 /**
  * @brief Construct a new WallAvoider3D object.
@@ -100,7 +69,7 @@ WallAvoider3D::WallAvoider3D() : Node("wall_avoider_3d"),
  *
  * @return MovementParams A struct containing the initialized movement parameters.
  */
-MovementParams WallAvoider3D::InitializeMovementParams()
+WallAvoider3D::MovementParams WallAvoider3D::InitializeMovementParams()
 {
     return {
         std::numeric_limits<float>::infinity(),
@@ -243,7 +212,7 @@ void WallAvoider3D::HandleForwardMovement(MovementParams &mov_params, geometry_m
  * @param final_cmd A reference to a geometry_msgs::msg::Twist message that contains the final command velocities for the robot.
  *
  */
-void WallAvoider3D::HandleBackwardMovement(MovementParams mov_params, geometry_msgs::msg::Twist &final_cmd)
+void WallAvoider3D::HandleBackwardMovement(MovementParams &mov_params, geometry_msgs::msg::Twist &final_cmd)
 {
     if (mov_params.min_rear < this->threshold_stop_)
     {
