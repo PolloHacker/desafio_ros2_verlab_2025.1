@@ -19,13 +19,16 @@
 This project is a ROS2 simulation of the AgileX Scout Mini robot, designed to navigate and avoid obstacles using a Lidar sensor.  
 The simulation is built using Gazebo and Rviz and includes a Wall Avoidance System (WAS) that ensures the robot can autonomously avoid collisions.
 
+Our scout mini simulation has a 3d Lidar and a standart RGB camera.
+
 ## How to Run the Project
 
 ### Prerequisites
 Ensure you have the following installed:
 - ROS 2 (Jazzy)
 - Gazebo
-- colcon
+- colcon  
+**Make sure to follow all instructions from both ROS and Gazebo documentation**
 
 ### Setup Instructions
 
@@ -87,7 +90,7 @@ Ensure you have the following installed:
 
 ### Rviz related
 - There's a warning saying that no map was received but, since the program was running normally both in Gazebo and rviz, i ignored it.
-- I tried loading a map from Gazebo fuel, but my computed refused to do so.
+- I tried loading a map from Gazebo fuel, but my computer refused to do so.
 
 ### Gazebo related
 - I tried to calculate the inertia values for all the links using very basic formulas so the phisics may be not perfect.
